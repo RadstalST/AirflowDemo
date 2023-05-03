@@ -37,6 +37,8 @@ services:
       - ./dags:/opt/airflow/dags
       - ./logs:/opt/airflow/logs
       - ./plugins:/opt/airflow/plugins
+      # - /var/run/docker.sock:/var/run/docker.sock
+
     ports:
       - "8080:8080"
     command: ["airflow", "webserver"]
@@ -66,7 +68,10 @@ services:
             --role Admin \
             --email $ADMIN_EMAIL'
   scheduler:
-    image: apache/airflow:latest-python3.10
+    image: apache-scheduler
+    build:
+      context: ./docker/scheduler
+      dockerfile: Dockerfile
     depends_on:
       - postgres
     environment:
@@ -92,6 +97,10 @@ services:
       - ./dags:/opt/airflow/dags
       - ./logs:/opt/airflow/logs
       - ./plugins:/opt/airflow/plugins
+      # - /var/run/docker.sock:/var/run/docker.sock
+      - ./data:/app/data
+      - ./scripts:/app/scripts
+
     command: ["airflow", "scheduler"]
     restart: "unless-stopped"
 
@@ -104,6 +113,16 @@ services:
     volumes:
       - warehouse_postgres_data:/var/lib/postgresql/data
     restart: "unless-stopped"
+
+  # etl-image-build:
+  #   image: my-etl-image
+  #   build:
+  #     context: ./docker/ETL
+  #     dockerfile: Dockerfile
+  #   volumes:
+  #     - ./data:/app/data
+  #     - ./scripts:/app/scripts
+  #   command: "echo 'ETL image built'"
 volumes:
   postgres_data:
   warehouse_postgres_data:

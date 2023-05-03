@@ -24,7 +24,7 @@ This is a Docker Compose setup for running a web application and database using 
 
 
 # Notes on Airflow
-
+s
 1. Airflow is an open-source platform used for programmatically authoring, scheduling, and monitoring workflows or data pipelines.
 2. Airflow uses DAGs (Directed Acyclic Graphs) to represent workflows, which are made up of tasks that can run in parallel or sequentially.
 3. Airflow can be run locally, on a cloud-based service, or in a containerized environment.
