@@ -244,3 +244,5 @@ $RECYCLE.BIN/
 *.lnk
 logs
 # End of https://www.toptal.com/developers/gitignore/api/macos,windows,jupyternotebooks,python
+
+*/data/warehouse/*.geojson
