@@ -26,6 +26,13 @@ services:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_HOST=${POSTGRES_HOST}
+
+      - WAREHOUSE_POSTGRES_HOST=warehouse-postgres
+      - WAREHOUSE_POSTGRES_PORT=${WAREHOUSE_POSTGRES_PORT}
+      - WAREHOUSE_POSTGRES_NAME=${WAREHOUSE_POSTGRES_NAME}
+      - WAREHOUSE_POSTGRES_USER=${WAREHOUSE_POSTGRES_USER}
+      - WAREHOUSE_POSTGRES_PASSWORD=${WAREHOUSE_POSTGRES_PASSWORD}
+
     volumes:
       - ./dags:/opt/airflow/dags
       - ./logs:/opt/airflow/logs
@@ -74,6 +81,13 @@ services:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_HOST=${POSTGRES_HOST}
+      
+      - WAREHOUSE_POSTGRES_HOST=warehouse-postgres
+      - WAREHOUSE_POSTGRES_PORT=${WAREHOUSE_POSTGRES_PORT}
+      - WAREHOUSE_POSTGRES_NAME=${WAREHOUSE_POSTGRES_NAME}
+      - WAREHOUSE_POSTGRES_USER=${WAREHOUSE_POSTGRES_USER}
+      - WAREHOUSE_POSTGRES_PASSWORD=${WAREHOUSE_POSTGRES_PASSWORD}
+      
     volumes:
       - ./dags:/opt/airflow/dags
       - ./logs:/opt/airflow/logs
@@ -81,6 +95,16 @@ services:
     command: ["airflow", "scheduler"]
     restart: "unless-stopped"
 
-
+  warehouse-postgres:
+    image: postgres:12
+    environment:
+      POSTGRES_USER: ${WAREHOUSE_POSTGRES_USER}
+      POSTGRES_PASSWORD: ${WAREHOUSE_POSTGRES_PASSWORD}
+      POSTGRES_DB: ${WAREHOUSE_POSTGRES_DB}
+    volumes:
+      - warehouse_postgres_data:/var/lib/postgresql/data
+    restart: "unless-stopped"
 volumes:
   postgres_data:
+  warehouse_postgres_data:
+
